@@ -21,4 +21,28 @@ func main() {
 		"is",
 		"cool",
 	})
+
+	create := func(name, t string) *template.Template {
+		return template.Must(template.New(name).Parse(t))
+	}
+
+	t2 := create("t2", "Name: {{.Name}}\n")
+	t2.Execute(os.Stdout, struct {
+		Name string
+	}{"Joyston Fernandes"})
+
+	t2.Execute(os.Stdout, map[string]string{
+		"Name": "Micky Fernandes",
+	})
+
+	t3 := create("t3", "{{if . -}} yes {{else -}} no {{end}}\n")
+	t3.Execute(os.Stdout, "non empty")
+	t3.Execute(os.Stdout, "")
+
+	t4 := create("t4", "Range: {{range .}}{{.}} {{end}}\n")
+	t4.Execute(os.Stdout, []string{
+		"Go",
+		"text",
+		"template",
+	})
 }
